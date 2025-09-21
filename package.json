@@ -5,7 +5,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "check": "node index.js"
+    "check": "NODE_NO_WARNINGS=1 node index.js"
   },
   "repository": {
     "type": "git",

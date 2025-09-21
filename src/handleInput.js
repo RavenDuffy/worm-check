@@ -3,7 +3,7 @@ import flagList from "./flags/index.js";
 const flagMap = flagList.slice(0);
 
 const acceptedFlags = flagMap.flatMap((flag) => flag.name);
-const mandatoryFlags = flagMap.filter((flag) => flag.mandatory).flatMap((flag) => flag.name);
+export const mandatoryFlags = flagMap.filter((flag) => flag.mandatory).flatMap((flag) => flag.name);
 
 const separateShortFlags = (flags) => {
   const availableFlags = acceptedFlags;
@@ -39,7 +39,11 @@ const buildFlags = (input, remainingArgs) => {
       const full = flagMap.find((fm) => fm.name.includes(flag));
       if (full.takesArgs) {
         if (remainingArgs.length === 1) {
-          throw new Error(`${full.name} expects an argument`);
+          console.error(
+            "\x1b[31m%s\x1b[0m",
+            `\nError: The flag(s): ${full.name} expect at least one argument\n\nRun 'npm run check -- -h' for more info`,
+          );
+          process.exit();
         }
         full.args = searchUntilFlag(remainingArgs.slice(1));
         full.handler = full.handler.bind(searchUntilFlag(remainingArgs.slice(1)));
@@ -66,9 +70,6 @@ export const handleInput = () => {
         .flat(),
     ),
   );
-
-  if (!flags.some((flag) => flag.name.every((f) => mandatoryFlags.includes(f))))
-    throw new Error(`The flag(s): ${mandatoryFlags} are mandatory\n\nRun 'npm run check -- -h' for more info`);
 
   return flags;
 };

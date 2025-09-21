@@ -1,10 +1,10 @@
 import flagList from "./index.js";
 
 const printHelp = () => {
-  // console.clear();
   console.log("Welcome to worm check\n\nThe flags available are:");
+  const acceptsArgsString = `\x1b[2m | Accepts arguments\x1b[0m`;
   flagList.forEach((flag) => {
-    console.log(`${flag.name}`);
+    console.log(`\x1b[4m\x1b[1m${flag.name}\x1b[0m${flag.takesArgs ? acceptsArgsString : ""}`);
     console.group();
     console.log(`${flag.desc}\n`);
     console.groupEnd();
